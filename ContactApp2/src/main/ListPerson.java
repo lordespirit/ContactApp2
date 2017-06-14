@@ -87,14 +87,25 @@ public class ListPerson {
 		 * @param contact
 		 */
 		public void add(Person contact) {			
-			Person[] copyContacts = new Person[contacts.length+1];	
+			boolean exists = false;
+			String name = contact.getName();
+			String surname = contact.getSurname();
 			for(int i=0;i<contacts.length;i++){
-				copyContacts[i]=contacts[i];
+				if((contacts[i].getName().equals(name))&&(contacts[i].getSurname().equals(surname))){
+					exists = true;
+				}
 			}
-			copyContacts[contacts.length]=contact;		
-			
-			contacts = copyContacts;	
-			UserInterface.write(contacts);
+			if(!exists){
+				Person[] copyContacts = new Person[contacts.length+1];
+				for(int i=0;i<contacts.length;i++){
+					copyContacts[i]=contacts[i];
+				}
+				copyContacts[contacts.length]=contact;		
+				contacts = copyContacts;	
+				UserInterface.write(contacts);
+			}else{
+				throw new RuntimeException("El usuario con ese nombre y apellido ya existe");
+			}
 		}
 		
 		/**
@@ -226,6 +237,8 @@ public class ListPerson {
 			return copyContacts;
 		}
 
+		
+		@Deprecated
 		public int indexOf(String name, String surname) {
 			int index = -1;
 			for(int i=0;i<contacts.length;i++){

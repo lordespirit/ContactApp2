@@ -34,10 +34,11 @@ public class ContactApp {
 				UserInterface.printList(contacts.findByEmail(UserInterface.mailStringScan()));
 				break;
 			case "set":
-				name = UserInterface.nameStringScan();
-				surname = UserInterface.surnameStringScan();
-				Person setContact = UserInterface.scanContacts();
-				contacts.set(setContact, contacts.indexOf(name,surname));
+				UserInterface.printList(contacts.list());
+				int index = UserInterface.scanIndexToEdit(); 
+				Person personToEdit = contacts.get(index);
+				Person setContact = UserInterface.scanNewContacts(personToEdit);
+				contacts.set(setContact,index);
 				break;
 			case "list":
 				UserInterface.printList(contacts.list());

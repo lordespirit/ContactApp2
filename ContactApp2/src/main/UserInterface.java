@@ -1,24 +1,151 @@
 package main;
 
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
+
 import utils.Input;
 
 public class UserInterface {
 
 	public static Person scanContacts(){
-		System.out.print("|AÑADIR NUEVO CONTACTO|\nIntroduce nombre del contacto : ");
-		String name = Input.scannLine();
-		System.out.print("Introduce apellido del contacto : ");
-		String surname = Input.scannLine();
-		System.out.print("Introduce teléfono del contacto : ");
-		String phone = Input.scannLine();
-		System.out.print("Introduce correo electrónico del contacto : ");
-		String mail = Input.scannLine();
-		System.out.print("Introduce dirección del contacto : ");
-		String address = Input.scannLine();
+		String name,surname,phone,mail,address;
+		do{
+			System.out.print("|AÑADIR NUEVO CONTACTO|\nIntroduce nombre del contacto : ");
+			name = Input.scannLine();
+			System.out.print("Introduce apellido del contacto : ");
+			surname = Input.scannLine();
+			do{
+				System.out.print("Introduce teléfono del contacto : ");
+				phone = Input.scannLine();
+				if(!phoneValidator(phone)){
+					System.out.println("Formato teléfono incorrecto\n"
+							+ "Formato : únicamente números - Mínimo 9 cifras - Máximo 13");
+				}else{
+					phone = phoneFormat(phone);
+				}
+			}while(!phoneValidator(phone));
+			do{
+				System.out.print("Introduce correo electrónico del contacto : ");
+				mail = Input.scannLine();
+				if(!mailValidator(mail)){
+					System.out.println("El correo no está en formato correcto...");
+				}
+			}while(!mailValidator(mail));
+			System.out.print("Introduce dirección del contacto : ");
+			address = Input.scannLine();
+			if((name.equals("")||surname.equals("")||phone.equals("")|| mail.equals("")||address.equals(""))){
+				System.out.println("ERROR No has rellenado todos los datos!");
+				try {
+					TimeUnit.SECONDS.sleep(4);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}while(name.equals("")||surname.equals("")||phone.equals("")|| mail.equals("")||address.equals(""));
 		Person newContact = new Person(name+" "+surname+";"+phone+";"+mail+";"+address);
 		return newContact;
 	}
 	
+	public static Person scanNewContacts(Person defaultPerson){
+		
+		System.out.println("|NUEVA INFO DEL CONTACTO|\nLo que se deje en blanco se dejará el dato antiguo\nIntroduce nuevo nombre si se desea : ");
+		
+		System.out.println("Introduce nuevo nombre si se desea : ");
+		String name = Input.scannLine();
+		if(name.equals(""))
+			name = defaultPerson.getName();
+		
+		System.out.print("Introduce nuevo apellido si se desea : ");
+		String surname = Input.scannLine();
+		if(surname.equals(""))
+			surname = defaultPerson.getSurname();
+		
+		String phone;
+		do{
+		System.out.print("Introduce nuevo teléfono si se desea : ");
+		phone = Input.scannLine();
+		if(phone.equals(""))
+			phone = defaultPerson.getPhone();
+		if(!phoneValidator(phone))
+			System.out.println("ERROR! Formato teléfono incorrecto\n Formato : únicamente números - Mínimo 9 cifras - Máximo 13");
+		}while(!phoneValidator(phone));
+		
+		String mail;
+		do{
+		System.out.print("Introduce nuevo correo electrónico si se desea : ");
+		mail = Input.scannLine();
+		if(mail.equals(""))
+			mail = defaultPerson.getMail();
+		if(!mailValidator(mail))
+			System.out.println("ERROR! Formato de correo electrónico incorrecto");
+		}while(!mailValidator(mail));
+		
+		System.out.print("Introduce nuevo dirección de residencia si se desea : ");
+		String address = Input.scannLine();
+		if(address.equals(""))
+			address = defaultPerson.getAddress();
+
+		return new Person(name+" "+surname+";"+phone+";"+mail+";"+address);
+		
+	}
+	
+	
+	
+	
+	/*
+	public static Person setScanNewContacts(int index, String[] contacts){
+		String actualUser = contacts[index];
+		String[] splitUserData = actualUser.split(";");
+		String[] splitName = splitUserData[0].split(" ");
+		String actualName = splitName[0];
+		String actualSurname = splitName[1];
+		String actualPhone = splitUserData[1];
+		String actualMail = splitUserData[2];
+		String actualAddress = splitUserData[3];
+		String name,surname,phone,mail,address;
+		System.out.print("|NUEVA INFO DEL CONTACTO|\nLo que se deje en blanco se dejará el dato antiguo\nIntroduce nuevo nombre si se desea : ");
+		name = Input.scannLine();
+		if(name.equals("")){
+			name = actualName;
+		}
+		System.out.print("Introduce nuevo apellido si se desea : ");
+		surname = Input.scannLine();
+		if(surname.equals("")){
+			surname = actualSurname;
+		}
+		System.out.print("Introduce nuevo teléfono si se desea : ");
+		phone = Input.scannLine();
+		
+		if(phone.equals("")){
+			phone = actualPhone;
+		}
+		
+		if(!phoneValidator(phone)){
+			System.out.println("Formato teléfono incorrecto\n"
+					+ "Formato : únicamente números - Mínimo 9 cifras - Máximo 13");
+		}else{
+			phone = phoneFormat(phone);
+		}
+		
+		
+		System.out.print("Introduce nuevo correo electrónico si se desea : ");
+		mail = Input.scannLine();
+		if(mail.equals("")){
+			mail = actualMail;
+		
+		if(!mailValidator(mail))
+			System.out.println("El correo no está en formato correcto...");
+		
+		System.out.print("Introduce nuevo dirección de residencia si se desea : ");
+		address = Input.scannLine();
+		
+		if(address.equals(""))
+			address = actualAddress;
+		
+		Person newContact = new Person(name+" "+surname+";"+phone+";"+mail+";"+address);
+		return newContact;
+	}*/
+
 	public static String[] scanCompleteName(){
 		System.out.print("Introduce nombre de contacto : ");
 		String name = Input.scannLine();
@@ -56,6 +183,12 @@ public class UserInterface {
 		for(int i=0;i<array.length;i++){
 			System.out.println((i+1) + " - " + array[i]);
 		}
+		try {
+			TimeUnit.SECONDS.sleep(2);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public static void write(Person[] contacts){
@@ -71,16 +204,58 @@ public class UserInterface {
 	}
 
 	public static String nameStringScan() {
+		String name;
+		do{
 		System.out.print("Introduce nombre de contacto : ");
-		String name = Input.scannLine();
+		name = Input.scannLine();
+			if(name.equals("")){
+				System.out.println("Error, introduce un nombre");
+			}
+		}while(name.equals(""));
 		return name;
 	}
 
 	public static String surnameStringScan() {
+		String surname;
+		do{
 		System.out.print("Introduce apellido de contacto : ");
-		String surname = Input.scannLine();
+		surname = Input.scannLine();
+			if(surname.equals("")){
+				System.out.println("Error, introduce un apellido");
+			}
+		}while(surname.equals(""));
 		return surname;
 	}
 	
+	public static boolean mailValidator(String mail){
+		String pattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+		if(mail.matches(pattern)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	private static boolean phoneValidator(String phone) {
+		String pattern = "^[0-9]{9,13}$";
+				if(phone.matches(pattern)){
+					return true;
+				}else{
+					return false;
+				}
+	}
+	
+	private static String phoneFormat(String phone) {
+		final Pattern REGEX_PATTERN = 
+				Pattern.compile("^(0034|\\+34)?(\\d\\d\\d)-? ?(\\d\\d)-? ?(\\d)-? ?(\\d)-? ?(\\d\\d)$", Pattern.MULTILINE);
+		        return REGEX_PATTERN.matcher(phone).replaceAll("+34 $2 $3$4 $5$6");
+	}
 
+	public static int scanIndexToEdit() {
+		System.out.print("Introduce el índice del contacto que desea editar : ");
+		int index = Input.scannInt();
+		return index-1;
+	}
+	
 }
