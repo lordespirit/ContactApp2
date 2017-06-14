@@ -60,6 +60,7 @@ public class ListPerson {
 				throw new RuntimeException("Indice mal situado [OUT OF RANGE]");
 			}else{
 				contacts[index]=person;
+				UserInterface.write(contacts);
 			}
 		}
 		
@@ -103,8 +104,7 @@ public class ListPerson {
 		public void remove(Person person) {
 			int index = indexOf(person);
 			remove(index);
-		}
-		
+		}	
 		
 		public void remove(int index){
 			if(index<0||index>contacts.length){
@@ -144,6 +144,33 @@ public class ListPerson {
 			return finder;	
 		}
 
+		/**
+		 * Borra usuario pasando un nombre y apellido
+		 * Busca entonces el índice si existe.
+		 */
+		public void EraseByFullName(String strName, String strSurname){
+			int control = -1;
+			for(int i=0;i<contacts.length;i++){
+				if((contacts[i].getName().equals(strName))&&(contacts[i].getSurname().equals(strSurname))){
+					control = i;
+				}
+			}
+			if(control>=0){
+				Person copyContacts[] = new Person[contacts.length-1];
+				int j=0;
+				for(int i=0;i<contacts.length;i++){
+					if(i!=control){
+						copyContacts[j++]=contacts[i];
+					}
+				}
+				contacts = copyContacts;
+				UserInterface.write(contacts);
+				
+			}else{
+				throw new RuntimeException("Usuario no existe");
+			}
+			
+		}
 		/**
 		 * Retorna todas las personas que contengan strMail en su campo email
 		 * @return
@@ -197,5 +224,19 @@ public class ListPerson {
 				copyContacts[i]=contacts[i];
 			}
 			return copyContacts;
+		}
+
+		public int indexOf(String name, String surname) {
+			int index = -1;
+			for(int i=0;i<contacts.length;i++){
+				if((contacts[i].getName().equals(name))&&(contacts[i].getSurname().equals(surname))){
+					index = i;
+				}
+			}
+			if(index>=0){
+				return index;
+			}else{
+				throw new RuntimeException("Usuario no existe");
+			}
 		}
 }

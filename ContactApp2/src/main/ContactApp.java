@@ -13,13 +13,16 @@ public class ContactApp {
 			ListPerson contacts = new ListPerson(dataContacts);
 			UserInterface.printMenu();
 			option = UserInterface.scanOption();
-			
+			String name;
+			String surname;
 			switch(option){
 			case "add":
 				contacts.add(UserInterface.scanContacts());
 				break;
 			case "remove":
-				//contacts.remove(contacts.findByName(UserInterface.nameStringScan()));
+				name = UserInterface.nameStringScan();
+				surname = UserInterface.surnameStringScan();
+				UserInterface.remove(name, surname, contacts);
 				break;
 			case "sort":
 				UserInterface.printList(contacts.sort());
@@ -31,9 +34,10 @@ public class ContactApp {
 				UserInterface.printList(contacts.findByEmail(UserInterface.mailStringScan()));
 				break;
 			case "set":
-				//Person[] contactFind = contacts.findByName(UserInterface.nameStringScan()); 
-				//Person setContact = UserInterface.scanContacts();
-				//contacts.set(setContact, contacts.indexOf(contactFind[0]));
+				name = UserInterface.nameStringScan();
+				surname = UserInterface.surnameStringScan();
+				Person setContact = UserInterface.scanContacts();
+				contacts.set(setContact, contacts.indexOf(name,surname));
 				break;
 			case "list":
 				UserInterface.printList(contacts.list());

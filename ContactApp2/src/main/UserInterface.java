@@ -5,7 +5,7 @@ import utils.Input;
 public class UserInterface {
 
 	public static Person scanContacts(){
-		System.out.print("|AÑADIR CONTACTO|\nIntroduce nombre del contacto : ");
+		System.out.print("|AÑADIR NUEVO CONTACTO|\nIntroduce nombre del contacto : ");
 		String name = Input.scannLine();
 		System.out.print("Introduce apellido del contacto : ");
 		String surname = Input.scannLine();
@@ -19,10 +19,13 @@ public class UserInterface {
 		return newContact;
 	}
 	
-	public static String nameStringScan(){
+	public static String[] scanCompleteName(){
 		System.out.print("Introduce nombre de contacto : ");
 		String name = Input.scannLine();
-		return name;
+		System.out.print("Introduce apellido de contacto : ");
+		String surname = Input.scannLine();
+		String fullname[] = {name,surname};
+		return fullname;
 	}
 	
 	public static String mailStringScan(){
@@ -62,5 +65,22 @@ public class UserInterface {
 		}
 		FileHelper.writeFile(strContacts, "contacts.txt");
 	}
+
+	public static void remove(String strName, String strSurname, ListPerson contacts) {
+		contacts.EraseByFullName(strName, strSurname);
+	}
+
+	public static String nameStringScan() {
+		System.out.print("Introduce nombre de contacto : ");
+		String name = Input.scannLine();
+		return name;
+	}
+
+	public static String surnameStringScan() {
+		System.out.print("Introduce apellido de contacto : ");
+		String surname = Input.scannLine();
+		return surname;
+	}
 	
+
 }
