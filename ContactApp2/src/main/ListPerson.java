@@ -1,20 +1,10 @@
 package main;
 
+import java.awt.Toolkit;
 import java.util.Arrays;
 
 public class ListPerson {
 	
-	/*
-	 * Métodos a introducir
-	 * -add
-	 * -remove
-	 * -set (edit)
-	 * -find by name
-	 * -find by email
-	 * -sort
-	 * -indexOf
-	 */
-		
 		private Person[] contacts;
 
 		
@@ -32,7 +22,6 @@ public class ListPerson {
 				  contacts[i] = contact;  
 			  }
 		}
-
 
 		/**
 		 * Retorna el numero de personas que contiene
@@ -119,6 +108,7 @@ public class ListPerson {
 		
 		public void remove(int index){
 			if(index<0||index>contacts.length){
+				System.out.println("Índice incorrecto...");
 				return;
 			}else{
 				Person[] copyContacts = new Person[contacts.length-1];
@@ -129,6 +119,7 @@ public class ListPerson {
 					}
 				}
 				contacts = copyContacts;
+				UserInterface.write(contacts);
 			}
 		}
 		
@@ -178,10 +169,12 @@ public class ListPerson {
 				UserInterface.write(contacts);
 				
 			}else{
-				throw new RuntimeException("Usuario no existe");
+				System.out.println("El usuario no existe. Volviendo al menú");
+				Toolkit.getDefaultToolkit().beep();
 			}
 			
 		}
+		
 		/**
 		 * Retorna todas las personas que contengan strMail en su campo email
 		 * @return
@@ -238,18 +231,5 @@ public class ListPerson {
 		}
 
 		
-		@Deprecated
-		public int indexOf(String name, String surname) {
-			int index = -1;
-			for(int i=0;i<contacts.length;i++){
-				if((contacts[i].getName().equals(name))&&(contacts[i].getSurname().equals(surname))){
-					index = i;
-				}
-			}
-			if(index>=0){
-				return index;
-			}else{
-				throw new RuntimeException("Usuario no existe");
-			}
-		}
+	
 }

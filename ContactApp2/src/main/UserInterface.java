@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import utils.Input;
+import utils.Utils;
 
 public class UserInterface {
 
@@ -62,22 +63,22 @@ public class UserInterface {
 		
 		String phone;
 		do{
-		System.out.print("Introduce nuevo teléfono si se desea : ");
-		phone = Input.scannLine();
-		if(phone.equals(""))
-			phone = defaultPerson.getPhone();
-		if(!phoneValidator(phone))
-			System.out.println("ERROR! Formato teléfono incorrecto\n Formato : únicamente números - Mínimo 9 cifras - Máximo 13");
+			System.out.print("Introduce nuevo teléfono si se desea : ");
+			phone = Input.scannLine();
+			if(phone.equals(""))
+				phone = defaultPerson.getPhone();
+			if(!phoneValidator(phone))
+				System.out.println("ERROR! Formato teléfono incorrecto\n Formato : únicamente números - Mínimo 9 cifras - Máximo 13");
 		}while(!phoneValidator(phone));
 		
 		String mail;
 		do{
-		System.out.print("Introduce nuevo correo electrónico si se desea : ");
-		mail = Input.scannLine();
-		if(mail.equals(""))
-			mail = defaultPerson.getMail();
-		if(!mailValidator(mail))
-			System.out.println("ERROR! Formato de correo electrónico incorrecto");
+			System.out.print("Introduce nuevo correo electrónico si se desea : ");
+			mail = Input.scannLine();
+			if(mail.equals(""))
+				mail = defaultPerson.getMail();
+			if(!mailValidator(mail))
+				System.out.println("ERROR! Formato de correo electrónico incorrecto");
 		}while(!mailValidator(mail));
 		
 		System.out.print("Introduce nuevo dirección de residencia si se desea : ");
@@ -88,63 +89,6 @@ public class UserInterface {
 		return new Person(name+" "+surname+";"+phone+";"+mail+";"+address);
 		
 	}
-	
-	
-	
-	
-	/*
-	public static Person setScanNewContacts(int index, String[] contacts){
-		String actualUser = contacts[index];
-		String[] splitUserData = actualUser.split(";");
-		String[] splitName = splitUserData[0].split(" ");
-		String actualName = splitName[0];
-		String actualSurname = splitName[1];
-		String actualPhone = splitUserData[1];
-		String actualMail = splitUserData[2];
-		String actualAddress = splitUserData[3];
-		String name,surname,phone,mail,address;
-		System.out.print("|NUEVA INFO DEL CONTACTO|\nLo que se deje en blanco se dejará el dato antiguo\nIntroduce nuevo nombre si se desea : ");
-		name = Input.scannLine();
-		if(name.equals("")){
-			name = actualName;
-		}
-		System.out.print("Introduce nuevo apellido si se desea : ");
-		surname = Input.scannLine();
-		if(surname.equals("")){
-			surname = actualSurname;
-		}
-		System.out.print("Introduce nuevo teléfono si se desea : ");
-		phone = Input.scannLine();
-		
-		if(phone.equals("")){
-			phone = actualPhone;
-		}
-		
-		if(!phoneValidator(phone)){
-			System.out.println("Formato teléfono incorrecto\n"
-					+ "Formato : únicamente números - Mínimo 9 cifras - Máximo 13");
-		}else{
-			phone = phoneFormat(phone);
-		}
-		
-		
-		System.out.print("Introduce nuevo correo electrónico si se desea : ");
-		mail = Input.scannLine();
-		if(mail.equals("")){
-			mail = actualMail;
-		
-		if(!mailValidator(mail))
-			System.out.println("El correo no está en formato correcto...");
-		
-		System.out.print("Introduce nuevo dirección de residencia si se desea : ");
-		address = Input.scannLine();
-		
-		if(address.equals(""))
-			address = actualAddress;
-		
-		Person newContact = new Person(name+" "+surname+";"+phone+";"+mail+";"+address);
-		return newContact;
-	}*/
 
 	public static String[] scanCompleteName(){
 		System.out.print("Introduce nombre de contacto : ");
@@ -182,12 +126,6 @@ public class UserInterface {
 	public static void printList(Person[] array){
 		for(int i=0;i<array.length;i++){
 			System.out.println((i+1) + " - " + array[i]);
-		}
-		try {
-			TimeUnit.SECONDS.sleep(2);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 	
@@ -256,6 +194,28 @@ public class UserInterface {
 		System.out.print("Introduce el índice del contacto que desea editar : ");
 		int index = Input.scannInt();
 		return index-1;
+	}
+
+	public static void selectRemoveMethod(ListPerson contacts) {
+		System.out.println("Deseas eliminar contacto por índice o por nombre y apellido");
+		String option;
+		do{
+		System.out.println("Indice = 'i' o 'I' || Nombre Completo - 'n' o 'N' ");
+		option = Input.scannLine();
+		if(option.equals("i")||option.equals("I")){
+			UserInterface.printList(contacts.list());
+			System.out.print("Elige el índice del usuario a borrar : ");
+			int index = Input.scannInt();
+			contacts.remove(index-1);
+		}else if(option.equals("n")||option.equals("N")){
+			String name = UserInterface.nameStringScan();
+			String surname = UserInterface.surnameStringScan();
+			remove(name, surname, contacts);
+		}else{
+			System.out.println("Opción incorrecta");
+		}
+		}while(!(option.equals("i")||option.equals("I")||option.equals("n")||option.equals("N")));
+		
 	}
 	
 }

@@ -20,9 +20,7 @@ public class ContactApp {
 				contacts.add(UserInterface.scanContacts());
 				break;
 			case "remove":
-				name = UserInterface.nameStringScan();
-				surname = UserInterface.surnameStringScan();
-				UserInterface.remove(name, surname, contacts);
+				UserInterface.selectRemoveMethod(contacts);
 				break;
 			case "sort":
 				UserInterface.printList(contacts.sort());
